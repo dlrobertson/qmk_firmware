@@ -64,9 +64,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
      RGB_HUI, RGB_HUD, RGB_SAI, RGB_SAI, RGB_VAI, RGB_VAD,                            RGB_MOD, RGB_RMOD,RGB_M_G, RGB_M_P, RGB_M_B, RGB_TOG,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     _______, KC_BTN2, KC_WH_L, KC_WH_U, KC_WH_D, KC_WH_R,                            KC_MS_L, KC_MS_D, KC_MS_U, KC_MS_R, KC_BTN1, _______,
+     KC_ACL2, KC_BTN2, KC_WH_L, KC_WH_U, KC_WH_D, KC_WH_R,                            KC_MS_L, KC_MS_D, KC_MS_U, KC_MS_R, KC_BTN1, _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     _______, _______, _______, _______, _______, _______, DEBUG,            RESET,   _______, _______, _______, _______, _______, _______,
+     KC_ACL2, KC_ACL1, KC_ACL0, _______, _______, _______, DEBUG,            RESET,   _______, _______, _______, _______, _______, _______,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
                                     _______, _______, _______,                   _______, _______, _______
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
@@ -84,6 +84,7 @@ void matrix_scan_user(void) {
       SEND_STRING("{\n\n}\n");
     }
 
+#if defined(UCIS_ENABLE)
     SEQ_ONE_KEY(KC_U) {
       qk_ucis_start();
     }
@@ -93,6 +94,7 @@ void matrix_scan_user(void) {
       register_hex(0x03bb);
       unicode_input_finish();
     }
+#endif
 
     SEQ_ONE_KEY(KC_C) {
       register_code(KC_LCTL);
@@ -114,6 +116,7 @@ void matrix_scan_user(void) {
   }
 }
 
+#if defined(UCIS_ENABLE)
 void eeconfig_init_user(void) {
     set_unicode_input_mode(UC_LNX);
 }
@@ -122,6 +125,7 @@ const qk_ucis_symbol_t ucis_symbol_table[] = UCIS_TABLE(
     UCIS_SYM("poop", 0x1F4A9), // 💩
     UCIS_SYM("rofl", 0x1F923) // 🤣
 );
+#endif
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
